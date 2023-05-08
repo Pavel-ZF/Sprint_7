@@ -6,7 +6,7 @@ import model.Order;
 import static io.restassured.RestAssured.given;
 public class OrderClient extends ApiBase {
 
-    private Order order;
+    Order order;
     private final static String CREATE_ORDER_ENDPOINT = "/api/v1/orders";
 
     public void setOrder(Order order) {
