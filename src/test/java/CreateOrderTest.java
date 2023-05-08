@@ -1,6 +1,7 @@
 import client.OrderClient;
 import io.qameta.allure.Description;
 import io.qameta.allure.junit4.DisplayName;
+import io.restassured.response.ValidatableResponse;
 import model.Order;
 import org.junit.Before;
 import org.junit.Test;
@@ -12,6 +13,8 @@ import static org.hamcrest.Matchers.*;
 @RunWith(Parameterized.class)
 public class CreateOrderTest {
     Order order;
+    OrderClient orderClient = new OrderClient();
+    int track;
 
     public CreateOrderTest(Order order) {
         this.order = order;
@@ -32,15 +35,13 @@ public class CreateOrderTest {
         };
     }
 
-    OrderClient orderClient = new OrderClient();
-
     @Test
     @DisplayName("Check create a new order")
     @Description("An order with different valid parameters is created successfully")
     public void checkCreateOrder(){
-        orderClient.setOrder(order);
-        orderClient.createOrderRequest()
-                .then().statusCode(SC_CREATED)
+        ValidatableResponse response = orderClient.createOrderRequest(order);
+        response
+                .statusCode(SC_CREATED)
                 .and()
                 .assertThat().body("track", notNullValue());
     }
